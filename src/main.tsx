@@ -3,7 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import {Login,Sign_Up,Home} from './Pages/allpages.tsx'
+import { Login, Sign_Up, Home } from './Pages/allpages.tsx'
+import { Provider } from 'react-redux'
+import Store from './Redux/storage.ts'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -15,18 +17,18 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <Login/>
+        element: <Login />
       },
       {
         path: '/signup',
-        element: <Sign_Up/>
+        element: <Sign_Up />
       }
     ]
   }
 ])
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <RouterProvider router = {router} />
-  </StrictMode>,
+  <Provider store={Store}>
+    <RouterProvider router={router} />
+  </Provider>,
 )
