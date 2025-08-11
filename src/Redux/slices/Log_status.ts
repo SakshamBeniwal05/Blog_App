@@ -13,11 +13,13 @@ const Log_Slice = createSlice({
     name: "status",
     initialState,
     reducers:{
-        Login: (state)=>{
+        Login: (state,action)=>{
             state.status = true;
+            state.data = action.payload.data
         },
         Logout: (state)=>{
             state.status = false;
+            state.data = null;
         }
     }
 })

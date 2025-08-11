@@ -9,7 +9,7 @@ span {
 
 #login-form {
     border: 2px solid #282828;
-    height: 320px;
+    height: 340px;
     width: 25rem;
     padding: 10px;
     border-radius: 10px 10px;
@@ -40,4 +40,14 @@ main {
 
 .form-group {
     margin-top: 10px;
+}
+.foot_login{
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+    gap: 5px;
+    color: #a1a1a1;
+}
+#signup_login{
+    text-decoration: none;
 }

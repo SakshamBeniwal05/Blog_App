@@ -6,12 +6,12 @@ interface props {
   placeholder?:string
 }
 
-const Input: React.FC<props> = ({ label, type = "text",placeholder="" }) => {
+const Input: React.FC<props> = ({ label, type = "text",placeholder="",...rest }) => {
   return (
     <>
       <div className="input-wrapper">
         <label htmlFor={label}>{label}</label>
-        <input id={label} placeholder={placeholder} type={type} />
+        <input id={label} placeholder={placeholder} type={type} {...rest} />
       </div>
     </>
   )

@@ -2,15 +2,37 @@ import React, { useRef } from 'react'
 import './Home.css'
 import Button from '../../assets/button/Button'
 import useSpotlight from '../../utilities/useSpotlight'
-interface props{
-  x:number,
-  y:number
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Dropdown } from 'primereact/dropdown';
+        
+interface props {
+  x: number,
+  y: number
 }
 const Home = () => {
   const main_ref = useRef(null)
-  const main_position:props = useSpotlight(main_ref)
-  console.log(main_position.x,main_position.y);
-  
+  const main_position: props = useSpotlight(main_ref)
+  const status = useSelector((state) => state.status);
+  const mid_text = useRef(null)
+  const [maskSize, setMaskSize] = React.useState(200)
+
+  React.useEffect(() => {
+    if (!mid_text.current) return;
+
+    const { top, right, bottom, left } = mid_text.current.getBoundingClientRect();
+    const padding = 100;
+
+    const withinX = main_position.x >= left - padding && main_position.x <= right + padding;
+    const withinY = main_position.y >= top - padding && main_position.y <= bottom + padding;
+
+    if (withinX && withinY) {
+      setMaskSize(400);
+    } else {
+      setMaskSize(200);
+    }
+  }, [main_position]);
+
   return (
     <>
       <div id='main_visible' >
@@ -22,33 +44,51 @@ const Home = () => {
             <polygon fill="#fff" points="271.46 501.21 70.5 625.8 271.46 741.85 271.46 501.21" />
             <polygon fill="#fff" points="258.16 448.78 50.62 322.47 50.62 577.9 258.16 448.78" />
           </svg>
+          <div>
+            <svg id='menu_icon' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg>
+          </div>
         </div>
-        <div className='text_mid'>
+        <div ref={mid_text} className='text_mid'>
           <h1>Your world, curated.</h1>
           <h4>Hand-pick the ideas that inspire you, and find a home for the ones you need to share.</h4>
         </div>
         <div className="buttons">
-          <Button type='button' width='20vw' work='Login' bgcolor='e93c3c' />
-          <Button type='button' width='20vw' work='Sign Up' bgcolor='e93c3c' />
+          <Link to={'/login'}>
+            <Button type="button" width="20vw" work="Login" bgcolor="e93c3c" />
+          </Link>
+          <Link to={'/signup'}>
+            <Button type="button" width="20vw" work="Sign Up" bgcolor="e93c3c" />
+          </Link>
         </div>
+
         <div className="links">
+
           <div className="github">
-            <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50px" height="50px">    <path d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6c0-0.4,0-0.9,0.2-1.3 C7.2,6.1,7.4,6,7.5,6c0,0,0.1,0,0.1,0C8.1,6.1,9.1,6.4,10,7.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3c0.9-0.9,2-1.2,2.5-1.3 c0,0,0.1,0,0.1,0c0.2,0,0.3,0.1,0.4,0.3C17,6.7,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4 c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3C22,6.1,16.9,1.4,10.9,2.1z" fill='#fff' /></svg>
+            <Link target="_blank" to={'https://github.com/SakshamBeniwal05?tab=repositories'}>
+              <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50px" height="50px">    <path d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6c0-0.4,0-0.9,0.2-1.3 C7.2,6.1,7.4,6,7.5,6c0,0,0.1,0,0.1,0C8.1,6.1,9.1,6.4,10,7.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3c0.9-0.9,2-1.2,2.5-1.3 c0,0,0.1,0,0.1,0c0.2,0,0.3,0.1,0.4,0.3C17,6.7,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4 c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3C22,6.1,16.9,1.4,10.9,2.1z" fill='#fff' /></svg>
+            </Link>
           </div>
           <div className="linkdin">
-            <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px">    <path d="M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M17,20v19h-6V20H17z M11,14.47c0-1.4,1.2-2.47,3-2.47s2.93,1.07,3,2.47c0,1.4-1.12,2.53-3,2.53C12.2,17,11,15.87,11,14.47z M39,39h-6c0,0,0-9.26,0-10 c0-2-1-4-3.5-4.04h-0.08C27,24.96,26,27.02,26,29c0,0.91,0,10,0,10h-6V20h6v2.56c0,0,1.93-2.56,5.81-2.56 c3.97,0,7.19,2.73,7.19,8.26V39z" fill='#fff' /></svg>
+            <Link target="_blank" to={'https://www.linkedin.com/in/saksham-beniwal-082210225/'}>
+              <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px">    <path d="M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M17,20v19h-6V20H17z M11,14.47c0-1.4,1.2-2.47,3-2.47s2.93,1.07,3,2.47c0,1.4-1.12,2.53-3,2.53C12.2,17,11,15.87,11,14.47z M39,39h-6c0,0,0-9.26,0-10 c0-2-1-4-3.5-4.04h-0.08C27,24.96,26,27.02,26,29c0,0.91,0,10,0,10h-6V20h6v2.56c0,0,1.93-2.56,5.81-2.56 c3.97,0,7.19,2.73,7.19,8.26V39z" fill='#fff' /></svg>
+            </Link>
           </div>
           <div className="X">
-            <svg className='link_logo' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50px" height="50px" viewBox="0 0 50 50">
-              <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z" fill='#fff'></path>
-            </svg>
+            <Link target="_blank" to={'https://x.com/SakshamBen89720'}>
+              <svg className='link_logo' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50px" height="50px" viewBox="0 0 50 50">
+                <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z" fill='#fff'></path>
+              </svg>
+            </Link>
           </div>
         </div>
-      </div>
-      <div id='main_hidden'ref={main_ref} style={{
-        '--main_position-x': `${main_position.x -200}px`,
-        '--main_position-y': `${main_position.y -200}px`
-      }as React.CSSProperties}>
+      </div >
+      <div id="main_hidden" ref={main_ref}
+        style={{
+          "--main_position-x": maskSize === 400 ? `${main_position.x - 200}px` : `${main_position.x - 100}px`,
+          "--main_position-y": maskSize === 400 ? `${main_position.y - 200}px` : `${main_position.y - 100}px`,
+          "--mask_size": `${maskSize}px`,
+        } as React.CSSProperties}>
         <div className='logo'>
           <svg className='hidden' id="Layer_2_Default" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 595.28 841.89" width="100" height="100">
             <polygon fill="#fff" points="324.05 142.8 531.27 263 324.05 392.59 324.05 142.8" />
@@ -59,23 +99,10 @@ const Home = () => {
           </svg>
         </div>
         <div className='text_mid hidden_text_mid'>
-         <h1>
-          Beyond the algorithm, find your signal.
-         </h1>
+          <h1>
+            Beyond the algorithm, find your signal.
+          </h1>
           <h4>We champion human-selected stories over automated feeds, connecting you with powerful insights a machine would miss.</h4>
-        </div>
-        <div className="links">
-          <div className="github">
-            <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50px" height="50px">    <path d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6c0-0.4,0-0.9,0.2-1.3 C7.2,6.1,7.4,6,7.5,6c0,0,0.1,0,0.1,0C8.1,6.1,9.1,6.4,10,7.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3c0.9-0.9,2-1.2,2.5-1.3 c0,0,0.1,0,0.1,0c0.2,0,0.3,0.1,0.4,0.3C17,6.7,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4 c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3C22,6.1,16.9,1.4,10.9,2.1z" fill='#fff' /></svg>
-          </div>
-          <div className="linkdin">
-            <svg className=' link_logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50px" height="50px">    <path d="M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M17,20v19h-6V20H17z M11,14.47c0-1.4,1.2-2.47,3-2.47s2.93,1.07,3,2.47c0,1.4-1.12,2.53-3,2.53C12.2,17,11,15.87,11,14.47z M39,39h-6c0,0,0-9.26,0-10 c0-2-1-4-3.5-4.04h-0.08C27,24.96,26,27.02,26,29c0,0.91,0,10,0,10h-6V20h6v2.56c0,0,1.93-2.56,5.81-2.56 c3.97,0,7.19,2.73,7.19,8.26V39z" fill='#fff' /></svg>
-          </div>
-          <div className="X">
-            <svg className='link_logo' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50px" height="50px" viewBox="0 0 50 50">
-              <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z" fill='#fff'></path>
-            </svg>
-          </div>
         </div>
       </div>
     </>

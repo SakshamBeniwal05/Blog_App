@@ -4,16 +4,34 @@ import './Login.css'
 import Button from '../../assets/button/Button'
 import useSpotlight from '../../utilities/useSpotlight'
 import AuthServices from '../../Services/auth'
+import { useDispatch } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { Login } from '../../Redux/slices/Log_status'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface Position {
     x: number,
     y: number
 }
 
-const Login: React.FC = () => {
+const Login_page: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
     const { x, y }: Position = useSpotlight(ref);
-    console.log(x, y);
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const { register, handleSubmit } = useForm()
+
+    const Trigger_login = async (data) => {
+        const session = await AuthServices.Login(data)
+       if (session) {
+            const userdata = await AuthServices.Current_User(data);
+            dispatch(Login(userdata))
+            navigate('/')
+        }
+        else {
+            console.log('creation_error')
+        }
+    }
 
     return (
         <>
@@ -31,19 +49,24 @@ const Login: React.FC = () => {
                 </header>
                 <div className='form-divider'></div>
                 <main>
-                    <div className='form-group'>
-                        <Input label="E-mail" placeholder='name@example.com' />
-                    </div>
-                    <div className='form-group'>
-                        <Input label="Password" type='password' />
-                    </div>
-                    <div className='form-group'>
-                        <Button color='true' type='submit' width='22rem' work='Submit' />
-                    </div>
+                    <form onSubmit={handleSubmit(Trigger_login)}>
+                        <div className='form-group'>
+                            <Input label="E-mail" placeholder='name@example.com' {...register('email', { required: true })} />
+                        </div>
+                        <div className='form-group'>
+                            <Input label="Password" type='password' {...register('password', { required: true })} />
+                        </div>
+                        <div className='form-group'>
+                            <Button color='true' type='submit' width='22rem' work='Submit' />
+                        </div>
+                    </form>
+                    <footer className='foot_login'>
+                        Don't Have Account? <Link id='signup_login' to={'/signup'}>Sign Up</Link>
+                    </footer>
                 </main>
             </div>
         </>
     );
 };
 
-export default Login;   
+export default Login_page;   

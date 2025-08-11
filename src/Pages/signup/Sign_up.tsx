@@ -6,6 +6,9 @@ import useSpotlight from '../../utilities/useSpotlight'
 import AuthServices from '../../Services/auth'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { Login } from '../../Redux/slices/Log_status'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 interface props {
@@ -18,11 +21,19 @@ const Sign_Up: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch()
     const { x, y }: props = useSpotlight(ref);
+    const navigate = useNavigate();
     const { register, handleSubmit } = useForm()
-    
-    const Create = async (data)=>{
+
+    const Create = async (data) => {
         const session = await AuthServices.Sign_Up(data);
-          console.log(session);
+        if (session) {
+            const userdata = await AuthServices.Current_User(data);
+            dispatch(Login(userdata))
+            navigate('/')
+        }
+        else {
+            console.log('creation_error')
+        }
     }
     return (
         <>
@@ -41,19 +52,23 @@ const Sign_Up: React.FC = () => {
                 <main>
                     <form onSubmit={handleSubmit(Create)}>
                         <div className='butt-login'>
-                            <Input label="Name" placeholder='Name' {...register('name', {required:true})} />
+                            <Input label="Name" placeholder='Name' {...register('name', { required: true })} />
                         </div>
                         <div className='butt-login'>
-                            <Input label="E-mail" placeholder='name@example.com'  {...register('email', {required:true})}  />
+                            <Input label="E-mail" placeholder='name@example.com'  {...register('email', { required: true })} />
                         </div>
                         <div className='butt-login'>
-                            <Input label="Password" type='password' {...register('password', {required:true})} />
+                            <Input label="Password" type='password' {...register('password', { required: true })} />
                         </div>
                         <div className='butt-login '>
                             <Button color='true' type='submit' width='22rem' work='Submit' />
                         </div>
                     </form>
+                    <footer className='foot_sign_up'>
+                        Have Account? <Link id='Login_signup' to={'/login'}>Log-In</Link> 
+                    </footer>
                 </main>
+
             </div>
         </>
     );
