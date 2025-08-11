@@ -1,11 +1,12 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './Home.css'
 import Button from '../../assets/button/Button'
 import useSpotlight from '../../utilities/useSpotlight'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Dropdown } from 'primereact/dropdown';
-        
+import AuthServices from '../../Services/auth'
+import { Logout } from '../../Redux/slices/Log_status'
+
 interface props {
   x: number,
   y: number
@@ -13,11 +14,32 @@ interface props {
 const Home = () => {
   const main_ref = useRef(null)
   const main_position: props = useSpotlight(main_ref)
-  const status = useSelector((state) => state.status);
+  const status = useSelector((state: any) => state.status.status);
   const mid_text = useRef(null)
-  const [maskSize, setMaskSize] = React.useState(200)
+  const dispatch = useDispatch()
+  const [maskSize, setMaskSize] = useState(200)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
+  }, [status])
+
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        !document.getElementById('dropdown')?.contains(e.target as Node) &&
+        !document.getElementById('dropdownMenu')?.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!mid_text.current) return;
 
     const { top, right, bottom, left } = mid_text.current.getBoundingClientRect();
@@ -33,6 +55,19 @@ const Home = () => {
     }
   }, [main_position]);
 
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prev) => !prev)
+  }
+
+  const Triggerd_Logout=async()=>{
+    try {
+      await AuthServices.Logout()
+      dispatch(Logout())
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   return (
     <>
       <div id='main_visible' >
@@ -44,23 +79,35 @@ const Home = () => {
             <polygon fill="#fff" points="271.46 501.21 70.5 625.8 271.46 741.85 271.46 501.21" />
             <polygon fill="#fff" points="258.16 448.78 50.62 322.47 50.62 577.9 258.16 448.78" />
           </svg>
-          <div>
-            <svg id='menu_icon' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-            </svg>
-          </div>
+          {status && (
+            <div id='dropdown' onClick={handleDropdownToggle} style={{ position: 'relative' }}>
+              <svg id='menu_icon' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+              </svg>
+              {isDropdownOpen && (
+                <div id="dropdownMenu">
+                  <Button type="button" work="Add Post" width="100%" bgcolor="e93c3c" />
+                  <Button type="button" work="All Post" width="100%" bgcolor="e93c3c" />
+                  <Button type="button" work="Logout" width="100%" bgcolor="e93c3c" onClick={Triggerd_Logout} />
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div ref={mid_text} className='text_mid'>
           <h1>Your world, curated.</h1>
           <h4>Hand-pick the ideas that inspire you, and find a home for the ones you need to share.</h4>
         </div>
-        <div className="buttons">
-          <Link to={'/login'}>
-            <Button type="button" width="20vw" work="Login" bgcolor="e93c3c" />
-          </Link>
-          <Link to={'/signup'}>
-            <Button type="button" width="20vw" work="Sign Up" bgcolor="e93c3c" />
-          </Link>
-        </div>
+        {!status && (
+          <div className="buttons">
+            <Link to={'/login'}>
+              <Button type="button" width="20vw" work="Login" bgcolor="e93c3c" />
+            </Link>
+            <Link to={'/signup'}>
+              <Button type="button" width="20vw" work="Sign Up" bgcolor="e93c3c" />
+            </Link>
+          </div>
+        )}
 
         <div className="links">
 
