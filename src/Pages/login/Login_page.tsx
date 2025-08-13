@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import Input from "../../assets/input/Input"
 import './Login.css'
 import Button from '../../assets/button/Button'
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Login } from '../../Redux/slices/Log_status'
 import { Link, useNavigate } from 'react-router-dom'
+import Popup from '../../assets/error pop-up/popup'
 
 interface Position {
     x: number,
@@ -20,13 +21,21 @@ const Login_page: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
+    const [Error, setError] = useState(false)
+    const [ErrorData, setErrorData] = useState(null)
 
     const Trigger_login = async (data) => {
         const session = await AuthServices.Login(data)
-       if (session) {
+        if (session) {
             const userdata = await AuthServices.Current_User(data);
-            dispatch(Login(userdata))
-            navigate('/')
+            if (userdata?.code) {
+                setError(true)
+                setErrorData(userdata)
+            }
+            else {
+                dispatch(Login(userdata))
+                navigate('/')
+            }
         }
         else {
             console.log('creation_error')
@@ -35,35 +44,46 @@ const Login_page: React.FC = () => {
 
     return (
         <>
+            {Error && (
+                <div id='error_appear_zone'>
+                    <Popup prop={ErrorData} onClose={() => {
+                        setError(false)
+                        setErrorData(null)
+                    }} />
+                </div>
+            )}
             <div
-                id='login-form'
-                ref={ref}
-                style={{
-                    '--x': `${x}px`,
-                    '--y': `${y}px`
-                } as React.CSSProperties}
-            >
-                <header>
-                    <h3>Login</h3>
-                    <span>Enter your credentials to access your account</span>
-                </header>
-                <div className='form-divider'></div>
-                <main>
-                    <form onSubmit={handleSubmit(Trigger_login)}>
-                        <div className='form-group'>
-                            <Input label="E-mail" placeholder='name@example.com' {...register('email', { required: true })} />
-                        </div>
-                        <div className='form-group'>
-                            <Input label="Password" type='password' {...register('password', { required: true })} />
-                        </div>
-                        <div className='form-group'>
-                            <Button color='true' type='submit' width='22rem' work='Submit' />
-                        </div>
-                    </form>
-                    <footer className='foot_login'>
-                        Don't Have Account? <Link id='signup_login' to={'/signup'}>Sign Up</Link>
-                    </footer>
-                </main>
+                id="error_blured_bg"
+                style={Error ? { filter: 'blur(10px)' } : {}}>
+                <div
+                    id='login-form'
+                    ref={ref}
+                    style={{
+                        '--x': `${x}px`,
+                        '--y': `${y}px`
+                    } as React.CSSProperties}>
+                    <header>
+                        <h3>Login</h3>
+                        <span>Enter your credentials to access your account</span>
+                    </header>
+                    <div className='form-divider'></div>
+                    <main>
+                        <form onSubmit={handleSubmit(Trigger_login)}>
+                            <div className='form-group'>
+                                <Input label="E-mail" placeholder='name@example.com' {...register('email', { required: true })} />
+                            </div>
+                            <div className='form-group'>
+                                <Input label="Password" type='password' {...register('password', { required: true })} />
+                            </div>
+                            <div className='form-group'>
+                                <Button color='true' type='submit' width='22rem' work='Submit' />
+                            </div>
+                        </form>
+                        <footer className='foot_login'>
+                            Don't Have Account? <Link id='signup_login' to={'/signup'}>Sign Up</Link>
+                        </footer>
+                    </main>
+                </div>
             </div>
         </>
     );

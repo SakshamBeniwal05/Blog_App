@@ -1,0 +1,37 @@
+import React, { useRef } from 'react'
+import Button from '../button/Button'
+import './popup.css'
+const Popup = ({ prop, onClose }) => {
+    console.log(prop);
+
+    const ref = useRef(null);
+    const popup_down = () => {
+        if (ref.current) {
+            ref.current.style.transform = 'translateY(75vh)';
+            setTimeout(() => {
+                if (ref.current) {
+                    ref.current.style.display = 'none';
+                }
+                if (onClose) onClose();
+            }, 500);
+        };
+    }
+
+    return (
+        <div id='main_bg'>
+            <div id='bg'></div>
+            <div ref={ref} id='sheet'>
+                <div id="grab"></div>
+                <h2>{prop.code}</h2>
+                <div id='statement'>
+                    {prop.message}
+                </div>
+                <div id='button_popup'>
+                    <Button type='button' color='#000' work='Okay' width='10vh' onClick={popup_down} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Popup

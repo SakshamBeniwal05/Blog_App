@@ -17,13 +17,15 @@ const AuthServices = {
         }
         catch (error) {
             console.log(`ERROR : SERVICE AUTH.TS : createAccount ${error}`);
+            return error;
         }
     },
     Login: async ({ email, password }) => {
         try {
             return await account.createEmailPasswordSession(email, password);
         } catch (error) {
-            console.log(`ERROR : SERVICE AUTH.JS : login ${error}`);
+            console.log(`ERROR : SERVICE AUTH.JS : login ${error}`)
+            return error;;
         }
     },
     Current_User: async () => {
@@ -32,6 +34,7 @@ const AuthServices = {
 
         } catch (error) {
             console.log(`ERROR : SERVICE AUTH.JS : currrentUser ${error}`);
+            return error;
         }
         return null;
     },
@@ -40,6 +43,7 @@ const AuthServices = {
             await account.deleteSessions();
         } catch (error) {
             console.log(`ERROR : SERVICE AUTH.JS : logout ${error}`);
+            return error;
         }
     }
 

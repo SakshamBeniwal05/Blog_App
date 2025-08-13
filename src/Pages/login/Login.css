@@ -41,13 +41,22 @@ main {
 .form-group {
     margin-top: 10px;
 }
-.foot_login{
+
+.foot_login {
     display: flex;
     justify-content: center;
     margin-top: 2vh;
     gap: 5px;
     color: #a1a1a1;
 }
-#signup_login{
+
+#signup_login {
     text-decoration: none;
+}
+
+#error_appear_zone{
+    position: fixed;
+    bottom: 0;
+    right: 35%;
+    z-index: 1000;
 }
