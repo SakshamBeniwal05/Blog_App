@@ -1,20 +1,36 @@
-import React from 'react'
-import './input.css'
-interface props {
-  label: string,
-  type?: string,
-  placeholder?:string
+import React, { type CSSProperties } from 'react';
+import './input.css';
+
+interface Props {
+  label: string;
+  type?: string;
+  placeholder?: string;
+  style?: CSSProperties;
+  custom_div?: React.ReactNode;
 }
 
-const Input: React.FC<props> = ({ label, type = "text",placeholder="",...rest }) => {
+const Input: React.FC<Props> = ({
+  style,
+  label,
+  type = 'text',
+  placeholder = '',
+  custom_div,
+  ...rest
+}) => {
   return (
-    <>
-      <div className="input-wrapper">
-        <label htmlFor={label}>{label}</label>
-        <input id={label} placeholder={placeholder} type={type} {...rest} />
-      </div>
-    </>
-  )
-}
+    <div className="input-wrapper">
+      <label htmlFor={label}>{label}</label>
+      {custom_div ? null : (
+        <input
+          style={style}
+          id={label}
+          placeholder={placeholder}
+          type={type}
+          {...rest}
+        />
+      )}
+    </div>
+  );
+};
 
-export default Input
+export default Input;

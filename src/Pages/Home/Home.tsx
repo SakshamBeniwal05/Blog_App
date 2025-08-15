@@ -3,7 +3,7 @@ import './Home.css'
 import Button from '../../assets/button/Button'
 import useSpotlight from '../../utilities/useSpotlight'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthServices from '../../Services/auth'
 import { Logout } from '../../Redux/slices/Log_status'
 import Popup from '../../assets/error pop-up/popup'
@@ -21,6 +21,7 @@ const Home = () => {
   const [maskSize, setMaskSize] = useState(200)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [Error, setError] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
   }, [status])
@@ -71,6 +72,9 @@ const Home = () => {
 
     }
   }
+  const navigation = ()=>{
+    navigate('/Addpost')
+  }
   return (
     <>
       {Error && (
@@ -99,9 +103,9 @@ const Home = () => {
                 </svg>
                 {isDropdownOpen && (
                   <div id="dropdownMenu">
-                    <Button type="button" work="Add Post" width="100%" bgcolor="e93c3c" />
-                    <Button type="button" work="All Post" width="100%" bgcolor="e93c3c" />
-                    <Button type="button" work="Logout" width="100%" bgcolor="e93c3c" onClick={Triggerd_Logout} />
+                    <Button type="button" work="Add Post" width="100%" bgcolor="ff6200" onClick={navigation}/>
+                    <Button type="button" work="All Post" width="100%" bgcolor="ff6200" />
+                    <Button type="button" work="Logout" width="100%" bgcolor="ff6200" onClick={Triggerd_Logout} />
                   </div>
                 )}
               </div>
@@ -114,10 +118,10 @@ const Home = () => {
           {!status && (
             <div className="buttons">
               <Link to={'/login'}>
-                <Button type="button" width="20vw" work="Login" bgcolor="e93c3c" />
+                <Button type="button" width="20vw" work="Login" bgcolor="ff6200" />
               </Link>
               <Link to={'/signup'}>
-                <Button type="button" width="20vw" work="Sign Up" bgcolor="e93c3c" />
+                <Button type="button" width="20vw" work="Sign Up" bgcolor="ff6200" />
               </Link>
             </div>
           )}

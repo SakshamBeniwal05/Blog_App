@@ -15,7 +15,7 @@
 #main_hidden {
     height: 100vh;
     width: 100vw;
-    background: #e93c3c;
+    background: #ff6200;
     position: relative;
 
     -webkit-mask-image: url('src/Images/Ellipse 1.svg');
