@@ -1,30 +1,31 @@
-import { useEffect, useState, type RefObject } from 'react'
-interface position {
-    x: number,
-    y: number
+import { useState, useEffect } from "react";
+
+function useSpotlight(ref: React.RefObject<HTMLElement>) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    function handleMouseMove(e: MouseEvent) {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      setPosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+
+    const node = ref.current;
+    if (node) {
+      node.addEventListener("mousemove", handleMouseMove);
+    }
+
+    return () => {
+      if (node) {
+        node.removeEventListener("mousemove", handleMouseMove);
+      }
+    };
+  }, [ref]);
+
+  return position;
 }
 
-const useSpotlight = (ref: RefObject<HTMLElement>) => {
-
-    const [position, setposition] = useState<position>({ x: 0, y: 0 })
-
-    useEffect(() => {
-
-        const incoming_div = ref.current;
-
-        function MouseMove(e: MouseEvent) {
-
-            const relative_positions = incoming_div.getBoundingClientRect();
-
-            setposition({ x: (e.clientX - relative_positions.left), y: (e.clientY - relative_positions.top) })
-        }
-        incoming_div.addEventListener("mousemove", MouseMove)
-        return () => {
-            incoming_div.removeEventListener('mousemove', MouseMove);
-        };
-
-    }, [ref])
-    return position;
-}
-
-export default useSpotlight
+export default useSpotlight;

@@ -7,7 +7,7 @@
 #menu_icon {
     transform: scale(2);
     position: fixed;
-    z-index: 10;
+    z-index: 10;    
     right: 5vh;
     top: 5vh;
 }

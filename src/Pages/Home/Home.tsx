@@ -72,14 +72,14 @@ const Home = () => {
 
     }
   }
-  const navigation = ()=>{
+  const navigation = () => {
     navigate('/Addpost')
   }
   return (
     <>
       {Error && (
         <div id='error_appear_zone'>
-          <Popup prop={{code:"LoL",message:"Logout Succesfully"}} onClose={() => {
+          <Popup prop={{ code: "LoL", message: "Logout Succesfully" }} onClose={() => {
             setError(false)
           }} />
         </div>
@@ -89,13 +89,15 @@ const Home = () => {
         style={Error ? { filter: 'blur(10px)' } : {}}>
         <div id='main_visible' >
           <div className='logo'>
-            <svg className='hidden' id="Layer_2_Default" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 595.28 841.89" width="100" height="100">
-              <polygon fill="#fff" points="324.05 142.8 531.27 263 324.05 392.59 324.05 142.8" />
-              <polygon fill="#fff" points="325.77 501.99 534.4 625.48 325.77 745.22 325.77 501.99" />
-              <polygon fill="#fff" points="271.46 153.75 70.5 273.95 271.46 396.03 271.46 153.75" />
-              <polygon fill="#fff" points="271.46 501.21 70.5 625.8 271.46 741.85 271.46 501.21" />
-              <polygon fill="#fff" points="258.16 448.78 50.62 322.47 50.62 577.9 258.16 448.78" />
-            </svg>
+            <Link to={'/'}>
+              <svg className='hidden' id="Layer_2_Default" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 595.28 841.89" width="100" height="100">
+                <polygon fill="#fff" points="324.05 142.8 531.27 263 324.05 392.59 324.05 142.8" />
+                <polygon fill="#fff" points="325.77 501.99 534.4 625.48 325.77 745.22 325.77 501.99" />
+                <polygon fill="#fff" points="271.46 153.75 70.5 273.95 271.46 396.03 271.46 153.75" />
+                <polygon fill="#fff" points="271.46 501.21 70.5 625.8 271.46 741.85 271.46 501.21" />
+                <polygon fill="#fff" points="258.16 448.78 50.62 322.47 50.62 577.9 258.16 448.78" />
+              </svg>
+            </Link>
             {status && (
               <div id='dropdown' onClick={handleDropdownToggle} style={{ position: 'relative' }}>
                 <svg id='menu_icon' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -103,7 +105,7 @@ const Home = () => {
                 </svg>
                 {isDropdownOpen && (
                   <div id="dropdownMenu">
-                    <Button type="button" work="Add Post" width="100%" bgcolor="ff6200" onClick={navigation}/>
+                    <Button type="button" work="Add Post" width="100%" bgcolor="ff6200" onClick={navigation} />
                     <Button type="button" work="All Post" width="100%" bgcolor="ff6200" />
                     <Button type="button" work="Logout" width="100%" bgcolor="ff6200" onClick={Triggerd_Logout} />
                   </div>

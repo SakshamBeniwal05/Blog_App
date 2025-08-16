@@ -1,5 +1,6 @@
 .spotlight-editor {
   width: 70vw;
+  background-color: transparent;
   min-height: 50vh;
   max-height: auto;
   border: 3px solid #1e1e1e;
@@ -21,3 +22,4 @@
     #282828
   );
 }
+
