@@ -1,18 +1,30 @@
 import React, { useRef } from 'react'
 import './Card.css'
 import useSpotlight from '../../utilities/useSpotlight'
-const Card = ({title,content,writer}) => {
+import parse from 'html-react-parser';
+import Post from '../../assets/Post/Post'
+import { useNavigate } from 'react-router-dom';
+const Card = ({ title, content, writer, id }) => {
     const ref = useRef(null)
     const { x, y } = useSpotlight(ref)
+    const post_id = id;
+    const navigate = useNavigate()
+    console.log(post_id);
+    const Post_Page = () =>{
+        navigate('/post')
+        Post(title,content,writer,id)
+    }
     return (
+
             <div id='card' ref={ref} style={{
                 '--x': `${x}px`,
                 '--y': `${y}px`
             } as React.CSSProperties}>
+
                 <div id='card_title'>{title}</div>
-                <div id='card_content'>{content}</div>
+                <div id='card_content'>{parse(content)}</div>
                 <div id='card_writer'>{writer}</div>
-                <div id='learn_more'>Learn More</div>
+                <div id='learn_more' onClick={Post_Page} >Learn More</div>
             </div>
     )
 }

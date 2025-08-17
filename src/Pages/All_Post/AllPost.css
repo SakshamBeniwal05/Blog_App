@@ -35,13 +35,14 @@ body {
 #posts{
     position: relative;
 }
-#back{
-    position: relative;
-    top: 10vh;
-}
 
 #none{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#back{
+    position: fixed;
+    z-index: 10;
 }

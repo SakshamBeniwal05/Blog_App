@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "appwrite": "^18.2.0",
+    "html-react-parser": "^5.2.6",
     "motion": "^12.23.12",
     "primereact": "^10.9.7",
     "quill": "^2.0.3",

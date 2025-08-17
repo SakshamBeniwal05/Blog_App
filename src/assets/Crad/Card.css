@@ -1,6 +1,6 @@
 #card {
     min-height: 30vh;
-    min-width: 20vw;
+    width: 20vw;
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -27,17 +27,24 @@
 }
 
 #card_content {
+    color: #a1a1a1;
     max-height: 5vh;
     width: 19vw;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #a1a1a1;
+}
+
+#card_content *{
+    font-size: small;
 }
 
 #card_writer {
     color: #a1a1a1;
 }
-
+#card_content * {
+  color: inherit !important;
+  
+}
 #card:hover #card_title {
     font-size: 25px;
     transition: font-size 0.3s ease;

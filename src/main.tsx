@@ -5,39 +5,42 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login_page, Sign_Up, Home,Addpost,AllPost } from './Pages/allpages.tsx'
 import { Provider } from 'react-redux'
 import Store from './Redux/storage.ts'
-import Card from './assets/Crad/Card.tsx'
+import Post from './assets/Post/Post.tsx'
+import { path } from 'motion/react-client'
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      {
-        path: '/',
-        element: <Home />
+      { 
+        path: '/', 
+        element: <Home /> 
       },
-      {
-        path: '/login',
-        element: <Login_page />
+      { 
+        path: '/login', 
+        element: <Login_page /> 
       },
-      {
-        path: '/signup',
-        element: <Sign_Up />
+      { 
+        path: '/signup', 
+        element: <Sign_Up /> 
       },
-      {
-        path: '/Addpost',
-        element:<Addpost/>
+      { 
+        path: '/Addpost', 
+        element: <Addpost /> 
       },
-     {
-      path: '/Allpost',
-      element:<AllPost/>
-     },
-     {
-      path: '/card',
-      element: <Card/>
-     } 
+      { 
+        path: '/Allpost', 
+        element: <AllPost /> 
+      },
+      { 
+        path: '/post/:id', 
+        element: <Post /> 
+      }
     ]
   }
 ])
+
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={Store}>

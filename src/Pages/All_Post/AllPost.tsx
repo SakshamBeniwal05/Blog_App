@@ -5,18 +5,16 @@ import './AllPost.css'
 import { useNavigate, Link } from 'react-router-dom'
 import Button from '../../assets/button/Button'
 
+
 const AllPost = () => {
   const [posts, setPosts] = React.useState([])
-  const navigate = useNavigate()
-
-  const navigate_back = () => {
-    navigate("/")
-  }
 
   React.useEffect(() => {
     DocumentServices.gets([]).then((res) => {
       if (res && res.documents) {
         setPosts(res.documents)
+        console.log(posts);
+
       }
     })
   }, [])
@@ -25,7 +23,11 @@ const AllPost = () => {
     <div id="allpos_body">
       {posts.length > 0 ? (
         <>
-        <Button type='buttom' work='Back' id="back" onClick={navigate_back}/>
+          <div id="back">
+            <Link to="/">
+              <Button type="button" width="5vw" work="Home" bgcolor="ff6200" />
+            </Link>
+          </div>
           <div id="posts">
             <div id="allPosts">
               <div id="tagline">
@@ -34,13 +36,21 @@ const AllPost = () => {
             </div>
             <div id="card_body">
               {posts.map((post) => (
-                <Card
-                  title={post.title}
-                  content={post.content}
-                  writer={post.writer}
-                />
+                <Link
+                  to={`/post/${post.$id}`}
+                  key={post.$id}
+                  style={{ textDecoration: "none", color: "inherit" }} // 🔥 removes underline + keeps normal text color
+                >
+                  <Card
+                    title={post.title}
+                    content={post.content}
+                    writer={post.writer}
+                    id={post.$id}
+                  />
+                </Link>
               ))}
             </div>
+
           </div>
         </>
       ) : (
