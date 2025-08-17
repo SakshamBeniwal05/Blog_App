@@ -30,11 +30,12 @@ const Addpost = () => {
   const Triggerd_Logout = async () => {
     try {
       await AuthServices.Logout()
+      localStorage.removeItem('user')
+      localStorage.clear()
       dispatch(Logout())
       setError(true)
     } catch (error) {
-      console.log(error);
-
+      console.log(error)
     }
   }
   const handleDropdownToggle = () => {

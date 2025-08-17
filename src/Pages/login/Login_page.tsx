@@ -35,6 +35,8 @@ const Login_page: React.FC = () => {
             else {
                 dispatch(Login(userdata))
                 navigate('/')
+                window.localStorage.setItem("user", JSON.stringify(userdata));
+                window.localStorage.setItem("session", JSON.stringify(session));
             }
         }
         else {

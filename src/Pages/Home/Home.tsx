@@ -65,20 +65,22 @@ const Home = () => {
   const Triggerd_Logout = async () => {
     try {
       await AuthServices.Logout()
+      localStorage.removeItem('user') 
+      localStorage.clear()              
       dispatch(Logout())
       setError(true)
     } catch (error) {
-      console.log(error);
-
+      console.log(error)
     }
   }
+
   const navigationAddpost = () => {
     navigate('/Addpost')
   }
   const navigationAllPost = () => {
     navigate('/AllPost')
   }
-  
+
   return (
     <>
       {Error && (
