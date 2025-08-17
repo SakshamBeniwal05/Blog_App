@@ -17,7 +17,7 @@ const Popup = ({ prop, onClose }) => {
     }
   };
 
-  if (!prop) return null; // 🔒 don't render if no data
+  if (!prop) return null;
 
   return (
     <div id='main_bg'>

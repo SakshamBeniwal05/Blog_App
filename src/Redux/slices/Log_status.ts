@@ -5,7 +5,7 @@ interface props{
     data?: any
 }
 const initialState:props = {
-    status: true,
+    status: false,
     data: null
 }
 

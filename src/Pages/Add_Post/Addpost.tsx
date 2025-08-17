@@ -8,8 +8,9 @@ import Button from '../../assets/button/Button'
 import './Addpost.css'
 import useSpotlight from '../../utilities/useSpotlight'
 import AuthServices from '../../Services/auth'
-import { useForm, Controller  } from 'react-hook-form'
-import {Logout } from '../../Redux/slices/Log_status'
+import { useForm, Controller } from 'react-hook-form'
+import { Logout } from '../../Redux/slices/Log_status'
+import DocumentServices from '../../Services/docs'
 
 interface Position {
   x: number,
@@ -46,10 +47,29 @@ const Addpost = () => {
     navigate('/Addpost')
   }
 
-  const Post_Post = (data) => {
+  const Post_Post = async (data) => {
+    if (status) {
+      try {
+        const userdata = await DocumentServices.create(data)
+        setError(true)
+        if (userdata?.$id) {
+          setErrorData({
+            code: "Blog Created",
+            message: "Blog document created successfully"
+          })
+        } else {
+          setErrorData(userdata)
+        }} 
+      catch (error) {
+        setError(true)
+        setErrorData(error)
+        console.log(error)
+      }
+    }
     console.log(data);
-
+    
   }
+
   return (
     <div id='main_addpost'>
       {Error && (
@@ -61,8 +81,8 @@ const Addpost = () => {
         </div>
       )}
       {status ? (
-        <>
-          <div id="navbar_addpost">
+        <div  style={Error ? { filter: 'blur(10px)' } : {}}>
+          <div id="navbar_addpost" >
             <div className='logo'>
               <Link to={'/'}>
                 <svg className='hidden' id="Layer_2_Default" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 595.28 841.89" width="100" height="100">
@@ -120,7 +140,7 @@ const Addpost = () => {
 
 
           </div>
-        </>
+        </div>
       ) : (
         <div id='login-not-found' ref={ref} style={{ '--x': `${x}px`, '--y': `${y}px` } as React.CSSProperties}>
 
@@ -140,8 +160,8 @@ const Addpost = () => {
               <Button type="button" width="20vw" work="Sign Up" bgcolor="ff6200" />
             </Link>
           </div>
-          <Link className='h3' style={{textDecoration:"none", marginTop:"20px"}} to={'/'}>
-          Home
+          <Link className='h3' style={{ textDecoration: "none", marginTop: "20px" }} to={'/'}>
+            Home
           </Link>
         </div>
       )}

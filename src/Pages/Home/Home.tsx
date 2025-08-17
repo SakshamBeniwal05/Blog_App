@@ -72,9 +72,13 @@ const Home = () => {
 
     }
   }
-  const navigation = () => {
+  const navigationAddpost = () => {
     navigate('/Addpost')
   }
+  const navigationAllPost = () => {
+    navigate('/AllPost')
+  }
+  
   return (
     <>
       {Error && (
@@ -105,8 +109,8 @@ const Home = () => {
                 </svg>
                 {isDropdownOpen && (
                   <div id="dropdownMenu">
-                    <Button type="button" work="Add Post" width="100%" bgcolor="ff6200" onClick={navigation} />
-                    <Button type="button" work="All Post" width="100%" bgcolor="ff6200" />
+                    <Button type="button" work="Add Post" width="100%" bgcolor="ff6200" onClick={navigationAddpost} />
+                    <Button type="button" work="All Post" width="100%" bgcolor="ff6200" onClick={navigationAllPost} />
                     <Button type="button" work="Logout" width="100%" bgcolor="ff6200" onClick={Triggerd_Logout} />
                   </div>
                 )}

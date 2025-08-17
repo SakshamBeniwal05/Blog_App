@@ -2,9 +2,10 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Login_page, Sign_Up, Home,Addpost } from './Pages/allpages.tsx'
+import { Login_page, Sign_Up, Home,Addpost,AllPost } from './Pages/allpages.tsx'
 import { Provider } from 'react-redux'
 import Store from './Redux/storage.ts'
+import Card from './assets/Crad/Card.tsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -25,7 +26,15 @@ const router = createBrowserRouter([
       {
         path: '/Addpost',
         element:<Addpost/>
-      }
+      },
+     {
+      path: '/Allpost',
+      element:<AllPost/>
+     },
+     {
+      path: '/card',
+      element: <Card/>
+     } 
     ]
   }
 ])
