@@ -1,9 +1,20 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import Button from '../button/Button'
 import './popup.css'
 
-const Popup = ({ prop, onClose }) => {
-  const ref = useRef(null);
+interface props {
+  prop: PopupData;
+  onClose: () => void;
+}
+
+interface PopupData {
+  code: string;
+  message: string;
+}
+
+const Popup:React.FC<props> = ({ prop, onClose }) => {
+  const ref = useRef<HTMLDivElement | null>(null)
+
 
   const popup_down = () => {
     if (ref.current) {

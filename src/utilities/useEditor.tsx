@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Editor } from "primereact/editor";
 import useSpotlight from './useSpotlight';
 import './UseEditor.css';

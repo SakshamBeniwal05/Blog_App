@@ -16,18 +16,24 @@ interface Position {
   x: number,
   y: number
 }
+
+interface data {
+  title:string;
+  content:any;
+  writer:string;
+}
 const Addpost = () => {
-  const status = useSelector((state: any) => state.status.status);
+  const status: Boolean = useSelector((state: any) => state.status.status);
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [Error, setError] = useState(false)
-  const [ErrorData, setErrorData] = useState(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const ref = useRef(null)
+  const [Error, setError] = useState<Boolean>(false)
+  const [ErrorData, setErrorData] = useState<object | null>(null)
+  const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false)
+  const ref = useRef<HTMLDivElement | null>(null)
   const { x, y }: Position = useSpotlight(ref)
   const { register, handleSubmit, control } = useForm();
 
-  const Triggerd_Logout = async () => {
+  const Triggerd_Logout = async ():Promise<void> => {
     try {
       await AuthServices.Logout()
       localStorage.removeItem('user')
@@ -36,25 +42,26 @@ const Addpost = () => {
       setError(true)
     } catch (error) {
       console.log(error)
+      // error popup
     }
   }
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = ():void => {
     setIsDropdownOpen((prev) => !prev)
   }
   useEffect(() => {
   }, [status])
 
-  const navigationAddpost = () => {
+  const navigationAddpost = ():void => {
     navigate('/Addpost')
   }
-  const navigationAllPost = () => {
+  const navigationAllPost = ():void => {
     navigate('/AllPost')
   }
 
-  const Post_Post = async (data) => {
+  const Post_Post = async (data:data) => {
     if (status) {
       try {
-        const userdata = await DocumentServices.create(data)
+        const userdata:Object = await DocumentServices.create(data)
         setError(true)
         if (userdata?.$id) {
           setErrorData({
@@ -72,7 +79,6 @@ const Addpost = () => {
       }
     }
     console.log(data);
-
   }
 
   return (

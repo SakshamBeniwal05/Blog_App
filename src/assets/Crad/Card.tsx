@@ -4,18 +4,26 @@ import useSpotlight from '../../utilities/useSpotlight'
 import parse from 'html-react-parser';
 import Post from '../../assets/Post/Post'
 import { useNavigate } from 'react-router-dom';
-const Card = ({ title, content, writer, id }) => {
-    const ref = useRef(null)
+
+interface props {
+    title: string;
+    content: string;
+    writer: string;
+    id: string;
+    onClick: () => void
+}
+const Card = ({ title, content, writer, id }:props) => {
+    const ref = useRef<HTMLDivElement | null>(null)
     const { x, y } = useSpotlight(ref)
     const post_id = id;
     const navigate = useNavigate()
     console.log(post_id);
-    const Post_Page = () =>{
+    
+    const Post_Page = ():void =>{
         navigate('/post')
-        Post(title,content,writer,id)
+        Post({title,content,writer})
     }
     return (
-
             <div id='card' ref={ref} style={{
                 '--x': `${x}px`,
                 '--y': `${y}px`
